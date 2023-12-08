@@ -1,4 +1,4 @@
-import {home, game, test} from "../pages";
+import {home, game} from "../pages";
 
 const routes = {};
 const templates = {};
