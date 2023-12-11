@@ -6,7 +6,7 @@ export const createText = ({text, fontSize = 30, fontWeight = '400'}) => {
         fontFamily: 'Arial',
         fontSize,
         fontWeight,
-        fill: ['#ffffff', '#00ff99'], // gradient
+        fill: ['#F0F0F0', '#CCCCCC'], // gradient
         stroke: '#4a1850',
     });
 

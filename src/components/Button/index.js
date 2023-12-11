@@ -11,8 +11,8 @@ export const createButton = ({text, onClick}) => {
     buttonText.position.y = padding / 2 + buttonText.height / 2;
 
     const graphics = new PIXI.Graphics();
-    graphics.lineStyle(5, '#ffffff', 1);
-    graphics.beginFill('#4a1850');
+    graphics.lineStyle(5, '#ADD8E6', 1);
+    graphics.beginFill('#0b1739');
     graphics.drawRect(container.width / 2 - graphics.width / 2, container.height / 2 - graphics.height / 2, buttonText.width + padding, buttonText.height + padding);
     graphics.endFill();
 
