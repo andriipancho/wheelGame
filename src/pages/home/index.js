@@ -1,5 +1,5 @@
 import {createButton} from "../../components/Button";
-import {app, app_div} from "../../app";
+import {app} from "../..";
 import {createText} from "../../components/Text";
 import {config} from "../../config";
 import {createBackground} from "../../components/Background";
@@ -10,8 +10,6 @@ export function home() {
     drawBackground();
     drawTitle();
     drawButton();
-
-    app_div.appendChild(app.view);
 }
 
 function drawBackground() {
@@ -24,7 +22,7 @@ function drawBackground() {
 
 function drawTitle() {
     const title = createText({text: "Wheel of Wonders", fontSize: 60, fontWeight: 'bold'});
-    title.position.y = - 50;
+    title.position.y = -50;
     app.stage.addChild(title);
 }
 
@@ -32,7 +30,6 @@ function drawButton() {
     const onCLick = () => {
         const link = document.createElement('a');
         link.href = '#/game';
-        app_div.innerHTML = '';
         link.click();
     }
 

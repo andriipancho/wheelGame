@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import {app, app_div} from "../../app";
+import {app} from "../..";
 import {createBackground} from "../../components/Background";
 import {config} from "../../config";
 import {createText} from "../../components/Text";
@@ -24,8 +24,6 @@ export function game() {
     drawSlices();
     drawCenter();
     drawPointer();
-
-    app_div.appendChild(app.view);
 }
 
 function drawBackground() {
@@ -56,7 +54,6 @@ function drawHomeButton() {
     const onCLick = () => {
         const link = document.createElement('a');
         link.href = '#';
-        app_div.innerHTML = '';
         link.click();
     }
 
@@ -109,7 +106,7 @@ function drawSlices() {
         const potentialWinningAmounts = items.map(item => item.amount); // Add amounts for each slice
 
         // Add text for potential winning amount inside each slice
-        const text  = createText({text: `${potentialWinningAmounts[i]}`, fontSize: 20})
+        const text = createText({text: `${potentialWinningAmounts[i]}`, fontSize: 20})
         text.position.set(sliceX, sliceY);
         text.rotation = sliceAngle + Math.PI * 1.6; // Rotate text to match slice
         container.addChild(text);

@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
                 },
                 progress: true,
             },
-            port: 1234, host: '0.0.0.0'
+            port: 1234, host: 'localhost'
         },
 
         // Web games are bigger than pages, disable the warnings that our game is too big.
@@ -71,7 +71,7 @@ module.exports = (env, argv) => {
         plugins: [
             // Copy our static assets to the final build
             new CopyPlugin({
-                patterns: [{ from: 'static/' }],
+                patterns: [{ from: 'assets/' }],
             }),
 
             // Make an index.html from the template
