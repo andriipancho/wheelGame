@@ -3,23 +3,22 @@ import {home, game} from "../pages";
 const routes = {};
 const templates = {};
 
-function route (path, template) {
+function route(path, template) {
     if (typeof template === 'function') {
         return routes[path] = template;
-    }
-    else if (typeof template === 'string') {
+    } else if (typeof template === 'string') {
         return routes[path] = templates[template];
     } else {
         return null;
     }
 }
 
-function template (name, templateFunction) {
+function template(name, templateFunction) {
     return templates[name] = templateFunction;
 }
 
 template('home', () => home());
-template('game', ()=> game());
+template('game', () => game());
 
 route('/', 'home');
 route('/game', 'game');

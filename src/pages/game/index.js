@@ -13,6 +13,7 @@ const sliceCount = 8;
 let balance = 100;
 let balanceContainer;
 let slicesContainer;
+let startWheelButton;
 
 export function game() {
     eventEmitter.on('handleChangeBalance', redrawBalance)
@@ -25,6 +26,7 @@ export function game() {
     drawSlices();
     drawCenter();
     drawPointer();
+    drawStartWheelButton()
 }
 
 function drawBackground() {
@@ -65,6 +67,21 @@ function drawHomeButton() {
     app.stage.addChild(button);
 }
 
+function drawStartWheelButton() {
+    const onCLick = () => {
+        const startWheelButtonIndex = app.stage.children.findIndex(item => item._boundsID === startWheelButton._boundsID)
+        app.stage.removeChildren(startWheelButtonIndex, startWheelButtonIndex + 1)
+        spinWheel();
+    }
+
+    const button = createButton({text: "Press to spin", onClick: onCLick});
+    button.position.x = -button.width / 2;
+    button.position.y = -button.height / 2;
+    app.stage.addChild(button);
+
+    startWheelButton = button;
+}
+
 function drawCenter() {
     const centerTexture = PIXI.Texture.from('/graphics/wheelCenter.png'); // Replace with center image
     const centerScale = 0.5; // Adjust scale factor as needed
@@ -80,10 +97,6 @@ function drawPointer() {
     pointer.anchor.set(0.5);
     pointer.position.set(0, -300);
     app.stage.addChild(pointer);
-
-    pointer.interactive = true;
-    pointer.buttonMode = true;
-    pointer.on('pointerdown', spinWheel);
 }
 
 function drawSlices() {
@@ -179,6 +192,29 @@ function spinWheel() {
             eventEmitter.emit('handleChangeBalance', +winningAmount)
             sound.stop();
             new Howl({src: '/sounds/final.wav'}).play();
+            drawWinMessage(winningAmount);
         }
     }, spinDuration / frameCount);
+}
+
+function drawWinMessage(winAmount) {
+    let interval;
+    let winText;
+    const onCLick = () => {
+        if (interval) {
+            clearInterval(interval);
+        }
+        if (!winText) {
+            return;
+        }
+        const winTextIndex = app.stage.children.findIndex(item => item._boundsID === winText._boundsID)
+        app.stage.removeChildren(winTextIndex, winTextIndex + 1);
+        drawStartWheelButton();
+    }
+    winText = createButton({text: `You won ${winAmount}`, onClick: onCLick});
+    winText.position.x = -winText.width / 2;
+    winText.position.y = -winText.height / 2;
+    app.stage.addChild(winText);
+
+    interval = setTimeout(() => onCLick(), 3000)
 }
