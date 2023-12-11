@@ -5,6 +5,7 @@ import {config} from "../../config";
 import {createText} from "../../components/Text";
 import {createButton} from "../../components/Button";
 import items from "../../items";
+import {Howl} from 'howler';
 
 const eventEmitter = new PIXI.utils.EventEmitter();
 
@@ -63,6 +64,7 @@ function drawHomeButton() {
     button.position.y = -config.height / 2 + buttonMargin;
     app.stage.addChild(button);
 }
+
 function drawCenter() {
     const centerTexture = PIXI.Texture.from('/graphics/wheelCenter.png'); // Replace with center image
     const centerScale = 0.5; // Adjust scale factor as needed
@@ -71,6 +73,7 @@ function drawCenter() {
     center.scale.set(centerScale);
     app.stage.addChild(center);
 }
+
 function drawPointer() {
     const pointerTexture = PIXI.Texture.from('/graphics/wheelPointer.png'); // Replace with pointer image
     const pointer = new PIXI.Sprite(pointerTexture);
@@ -82,6 +85,7 @@ function drawPointer() {
     pointer.buttonMode = true;
     pointer.on('pointerdown', spinWheel);
 }
+
 function drawSlices() {
     const container = new PIXI.Container();
     const sliceTexture = PIXI.Texture.from('/graphics/wheelSlice.png'); // Replace with slice image
@@ -117,7 +121,9 @@ function drawSlices() {
 }
 
 function spinWheel() {
-    const spinDuration = 1000; // Duration of the spin (milliseconds)
+    const sound = new Howl({src: '/sounds/ding_b.wav', loop: true});
+    sound.play();
+    const spinDuration = 3000; // Duration of the spin (milliseconds)
     const frameCount = 60; // Number of frames
     const pointerOffset = Math.PI * 3 / 2; // Offset for the pointer's position
 
@@ -171,6 +177,8 @@ function spinWheel() {
             // Display the winning amount on the winning slice
             const winningAmount = sliceAmounts[winningIndex];
             eventEmitter.emit('handleChangeBalance', +winningAmount)
+            sound.stop();
+            new Howl({src: '/sounds/final.wav'}).play();
         }
     }, spinDuration / frameCount);
 }

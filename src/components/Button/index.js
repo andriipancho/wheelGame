@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import {createText} from "../Text";
+import {Howl} from 'howler';
 
 export const createButton = ({text, onClick}) => {
     const padding = 25;
@@ -20,7 +21,10 @@ export const createButton = ({text, onClick}) => {
 
     graphics.eventMode = 'static';
     graphics.cursor = 'pointer';
-    graphics.on('pointerdown', onClick);
+    graphics.on('pointerdown', () => {
+        new Howl({src: '/sounds/button.wav'}).play();
+        onClick()
+    });
 
     return container;
 }
