@@ -1,4 +1,5 @@
 import {home, game} from "../pages";
+import {layout} from "../shared/ui/layout";
 
 const routes = {};
 const templates = {};
@@ -17,8 +18,8 @@ function template(name, templateFunction) {
     return templates[name] = templateFunction;
 }
 
-template('home', () => home());
-template('game', () => game());
+template('home', () => layout(home));
+template('game', () => layout(game));
 
 route('/', 'home');
 route('/game', 'game');

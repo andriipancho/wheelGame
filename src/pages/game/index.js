@@ -1,40 +1,34 @@
 import * as PIXI from "pixi.js";
 import {app} from "../..";
-import {createBackground} from "../../components/Background";
 import {config} from "../../config";
 import {createText} from "../../components/Text";
 import {createButton} from "../../components/Button";
-import items from "../../items";
+import items from "../../shared/data/items";
 import {Howl} from 'howler';
-
-const eventEmitter = new PIXI.utils.EventEmitter();
+import {eventEmitter} from "../../shared/eventEmitter";
 
 const sliceCount = 8;
 let balance = 100;
 let balanceContainer;
 let slicesContainer;
+let homeButton;
 let startWheelButton;
 
 export function game() {
-    eventEmitter.on('handleChangeBalance', redrawBalance)
+    window.addEventListener('hashchange', (evt) => {
+        eventEmitter.removeAllListeners()
+        const url = window.location.hash.slice(1);
+        if (url.includes('game')) {
+            eventEmitter.on('handleChangeBalance', redrawBalance)
+        }
+    });
 
-    app.stage.position.set(config.width / 2, config.height / 2);
-
-    drawBackground();
     drawBalance();
     drawHomeButton();
     drawSlices();
     drawCenter();
     drawPointer();
     drawStartWheelButton()
-}
-
-function drawBackground() {
-    const background = createBackground();
-    background.scale.set(config.width / background.height);
-    background.position.x = -background.width / 2;
-    background.position.y = -background.height / 2;
-    app.stage.addChild(background);
 }
 
 function drawBalance() {
@@ -65,12 +59,13 @@ function drawHomeButton() {
     button.position.x = -config.width / 2 + button.width / 2 - buttonMargin;
     button.position.y = -config.height / 2 + buttonMargin;
     app.stage.addChild(button);
+
+    homeButton = button;
 }
 
 function drawStartWheelButton() {
     const onCLick = () => {
-        const startWheelButtonIndex = app.stage.children.findIndex(item => item._boundsID === startWheelButton._boundsID)
-        app.stage.removeChildren(startWheelButtonIndex, startWheelButtonIndex + 1)
+        startWheelButton.visible = false;
         spinWheel();
     }
 
@@ -134,6 +129,7 @@ function drawSlices() {
 }
 
 function spinWheel() {
+    homeButton.visible = false;
     const sound = new Howl({src: '/sounds/ding_b.wav', loop: true});
     sound.play();
     const spinDuration = 3000; // Duration of the spin (milliseconds)
@@ -209,7 +205,8 @@ function drawWinMessage(winAmount) {
         }
         const winTextIndex = app.stage.children.findIndex(item => item._boundsID === winText._boundsID)
         app.stage.removeChildren(winTextIndex, winTextIndex + 1);
-        drawStartWheelButton();
+        startWheelButton.visible = true;
+        homeButton.visible = true;
     }
     winText = createButton({text: `You won ${winAmount}`, onClick: onCLick});
     winText.position.x = -winText.width / 2;

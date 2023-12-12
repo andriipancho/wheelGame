@@ -1,5 +1,5 @@
 import {router} from "./router/router";
-import {assetsMap} from './assetsMap'
+import {assetsMap} from './shared/data/assetsMap'
 import * as PIXI from "pixi.js";
 import {config} from "./config";
 import {Assets} from "pixi.js";
