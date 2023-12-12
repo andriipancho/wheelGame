@@ -15,6 +15,7 @@ let homeButton;
 let startWheelButton;
 
 export function game() {
+    eventEmitter.on('handleChangeBalance', redrawBalance)
     window.addEventListener('hashchange', (evt) => {
         eventEmitter.removeAllListeners()
         const url = window.location.hash.slice(1);
